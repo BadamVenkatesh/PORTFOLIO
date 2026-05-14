@@ -1,297 +1,153 @@
-import React, { useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
-import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
-import { Helmet } from "react-helmet";
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { FaLinkedin, FaGithub } from 'react-icons/fa';
+import { HiOutlineMail } from 'react-icons/hi';
 
+const Hero = ({ imageSrc }) => {
+  const sectionRef = useRef(null);
+  const nameRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const descRef = useRef(null);
+  const ctaRef = useRef(null);
+  const socialRef = useRef(null);
+  const imageRef = useRef(null);
+  const scrollRef = useRef(null);
 
-const HeroWithImage = ({ imageSrc }) => {
-    const imageRef = useRef(null);
-    const textRef = useRef(null);
-    const headingRef = useRef(null);
-    const paragraphRefs = useRef([]);
-    const buttonRefs = useRef([]);
-    const socialRefs = useRef([]);
-    const blobRefs = useRef([]);
+  useEffect(() => {
+    const tl = gsap.timeline({ delay: 2.5 });
 
-    // 3D tilt effect on image hover
-    const handleMouseMove = (e) => {
-        const el = imageRef.current;
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
+    const nameEl = nameRef.current;
+    if (nameEl) {
+      const text = nameEl.textContent;
+      nameEl.innerHTML = '';
+      text.split('').forEach((char) => {
+        const span = document.createElement('span');
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        span.className = 'hero-name-char';
+        nameEl.appendChild(span);
+      });
 
-        const rotateX = ((y - centerY) / centerY) * 12;
-        const rotateY = ((x - centerX) / centerX) * 12;
+      tl.to(nameEl.querySelectorAll('.hero-name-char'), {
+        opacity: 1, y: 0, duration: 0.05, stagger: 0.04, ease: 'power2.out',
+      });
+    }
 
-        gsap.to(el, {
-            duration: 0.4,
-            rotateX: -rotateX,
-            rotateY: rotateY,
-            transformPerspective: 1000,
-            ease: 'power3.out',
-            boxShadow: `${-rotateY * 2}px ${rotateX * 2}px 20px rgba(10, 50, 180, 0.5)`,
-            filter: 'drop-shadow(0 0 5px rgba(130, 50, 180, 0.7))',
-        });
-    };
+    tl.fromTo(subtitleRef.current, { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3');
+    tl.fromTo(descRef.current, { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4');
+    tl.fromTo(ctaRef.current, { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3');
+    tl.fromTo(socialRef.current, { opacity: 0 },
+      { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.3');
+    tl.fromTo(imageRef.current, { opacity: 0, scale: 0.92 },
+      { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, '-=1');
+    tl.fromTo(scrollRef.current, { opacity: 0 },
+      { opacity: 1, duration: 0.8 }, '-=0.3');
 
-    const handleMouseLeave = () => {
-        gsap.to(imageRef.current, {
-            duration: 0.6,
-            rotateX: 0,
-            rotateY: 0,
-            boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-            filter: 'drop-shadow(0 0 0 transparent)',
-            ease: 'power3.out',
-        });
-    };
+    gsap.to(imageRef.current, {
+      y: -10, duration: 4, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 3.5,
+    });
+  }, []);
 
-    useEffect(() => {
-        // Initial animations
-        gsap.fromTo(
-            headingRef.current,
-            { opacity: 0, scale: 0.8 },
-            { opacity: 1, scale: 1, duration: 1, ease: 'back.out(1.7)', delay: 0.3 }
-        );
+  return (
+    <section id="home" ref={sectionRef} style={{
+      minHeight: '100vh', display: 'flex', alignItems: 'center', position: 'relative',
+      overflow: 'hidden', background: '#0a0a0a',
+      padding: 'clamp(100px, 15vw, 140px) clamp(24px, 5vw, 80px) clamp(60px, 10vw, 100px)',
+    }}>
+      <div style={{ position: 'absolute', top: '-30%', right: '-20%', width: '700px', height: '700px',
+        background: 'radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: '-20%', left: '-15%', width: '500px', height: '500px',
+        background: 'radial-gradient(circle, rgba(201,168,76,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-        gsap.fromTo(
-            paragraphRefs.current,
-            { opacity: 0, x: -20 },
-            {
-                opacity: 1,
-                x: 0,
-                duration: 1,
-                ease: 'power3.out',
-                stagger: 0.2,
-                delay: 0.6,
-            }
-        );
+      <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', display: 'grid',
+        gridTemplateColumns: '1fr auto', alignItems: 'center', gap: 'clamp(40px, 6vw, 80px)' }}
+        className="hero-grid">
+        <div style={{ zIndex: 2 }}>
+          <p className="font-mono" style={{ fontSize: '0.85rem', color: '#c9a84c', letterSpacing: '0.15em', marginBottom: '20px' }}>
+            hey there, I'm —
+          </p>
+          <h1 ref={nameRef} className="font-heading" style={{
+            fontSize: 'clamp(2.8rem, 7vw, 5rem)', fontWeight: 900, color: '#f0ece4',
+            lineHeight: 1.05, marginBottom: '20px', letterSpacing: '-0.02em',
+          }}>Badam Venkatesh</h1>
 
-        gsap.fromTo(
-            buttonRefs.current,
-            { opacity: 0, y: 20 },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.6,
-                ease: 'power3.out',
-                stagger: 0.15,
-                delay: 1.4,
-            }
-        );
+          <p ref={subtitleRef} className="font-body" style={{
+            fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', color: '#c9a84c', marginBottom: '24px', opacity: 0,
+          }}>Spring Boot Developer · GenAI Engineer · Problem Solver</p>
 
-        gsap.fromTo(
-            socialRefs.current,
-            { opacity: 0, y: 20 },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.6,
-                ease: 'power3.out',
-                stagger: 0.1,
-                delay: 1.8,
-            }
-        );
+          <p ref={descRef} className="font-body" style={{
+            fontSize: 'clamp(0.95rem, 1.8vw, 1.05rem)', color: '#8a8a8a', lineHeight: 1.7,
+            maxWidth: '520px', marginBottom: '36px', opacity: 0,
+          }}>
+            I design distributed backend systems with Spring Boot, build
+            GenAI-powered applications with LangChain, and solve 1200+ DSA
+            problems for fun. Final-year CS undergrad at RGUKT Basar — shipping
+            production code since sophomore year.
+          </p>
 
-        gsap.to(imageRef.current, {
-            scale: 1,
-            opacity: 1,
-            duration: 1,
-            ease: 'back.out(1.7)',
-            delay: 0.3,
-        });
+          <div ref={ctaRef} style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '40px', opacity: 0 }}>
+            <button className="btn-gold-filled" data-cursor-hover
+              onClick={() => { document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }); }}>
+              View My Work
+            </button>
+            <a href="mailto:badamvenkatesh2007@gmail.com" className="btn-gold" data-cursor-hover>
+              Get In Touch
+            </a>
+          </div>
 
-        // Floating blobs slow floating animation (yoyo infinite)
-        blobRefs.current.forEach((blob, i) => {
-            gsap.to(blob, {
-                y: 20,
-                duration: 6 + i * 2,
-                ease: 'sine.inOut',
-                yoyo: true,
-                repeat: -1,
-                delay: i,
-            });
-            gsap.to(blob, {
-                x: 15,
-                duration: 8 + i * 2,
-                ease: 'sine.inOut',
-                yoyo: true,
-                repeat: -1,
-                delay: i + 1,
-            });
-        });
-    }, []);
+          <div ref={socialRef} style={{ display: 'flex', gap: '20px', opacity: 0 }}>
+            {[
+              { Icon: FaGithub, href: 'https://github.com/BadamVenkatesh', label: 'GitHub' },
+              { Icon: FaLinkedin, href: 'https://linkedin.com/in/badamvenkatesh', label: 'LinkedIn' },
+              { Icon: HiOutlineMail, href: 'mailto:badamvenkatesh2007@gmail.com', label: 'Email' },
+            ].map(({ Icon, href, label }) => (
+              <a key={label} href={href}
+                target={label !== 'Email' ? '_blank' : undefined}
+                rel={label !== 'Email' ? 'noopener noreferrer' : undefined}
+                aria-label={label} data-cursor-hover
+                style={{ color: '#6b6b6b', fontSize: '1.2rem', transition: 'color 0.3s ease, transform 0.3s ease' }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = '#c9a84c'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = '#6b6b6b'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+                <Icon />
+              </a>
+            ))}
+          </div>
+        </div>
 
-    // Hover effect for buttons
-    const handleButtonHover = (index, entering) => {
-        gsap.to(buttonRefs.current[index], {
-            scale: entering ? 1.05 : 1,
-            backgroundColor: entering ? '#00fff7' : '#1e1e2f', // neon cyan hover, dark midnight normal
-            transition: 'background-color 0.3s ease',
-            boxShadow: entering
-                ? '0 8px 20px rgba(0, 255, 247, 0.7)'  // bright glowing cyan shadow
-                : '0 4px 10px rgba(0, 255, 247, 0.3)',
-        });
-    };
+        <div ref={imageRef} style={{
+          width: 'clamp(240px, 22vw, 320px)', height: 'clamp(300px, 28vw, 400px)',
+          borderRadius: '16px', overflow: 'hidden', position: 'relative', opacity: 0,
+          border: '1px solid rgba(201, 168, 76, 0.2)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(201, 168, 76, 0.05)',
+        }}>
+          <img src={imageSrc} alt="Badam Venkatesh — Spring Boot Developer & GenAI Engineer" loading="eager"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '0% 0%' }} draggable={false} />
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '30%',
+            background: 'linear-gradient(transparent, rgba(10, 10, 10, 0.7))', pointerEvents: 'none' }} />
+        </div>
+      </div>
 
-    // Hover effect for social icons
-    const handleSocialHover = (index, entering) => {
-        gsap.to(socialRefs.current[index], {
-            scale: entering ? 1.3 : 1,
-            y: entering ? -5 : 0,
-            color: entering ? '#39ff14' : '#61dafb', // neon green on hover, React blue normal
-            duration: 0.3,
-            ease: 'power1.out',
-        });
-    };
+      <div ref={scrollRef} className="scroll-indicator" style={{ opacity: 0 }}>
+        <div className="scroll-line" />
+        <div className="scroll-text">scroll</div>
+      </div>
 
-
-    return (
-        <>
-            <Helmet>
-                <title>Badam Venkatesh | Passionate Developer Portfolio</title>
-                <meta name="description" content="Hi, I am Badam Venkatesh, a passionate software developer open to internships and collaborations." />
-                <meta name="keywords" content="Badam Venkatesh, software developer, portfolio, internships, tech, coding" />
-                <meta name="author" content="Badam Venkatesh" />
-                <meta property="og:title" content="Badam Venkatesh | Software Developer Portfolio" />
-                <meta property="og:description" content="Hi, I am Badam Venkatesh, a passionate software developer open to internships and collaborations." />
-                <meta property="og:type" content="website" />
-            </Helmet>
-            <section id="home" className="relative w-full min-h-screen flex flex-col md:flex-row items-center justify-center px-6 md:px-20 pt-45 md:pt-15 py-16 overflow-hidden bg-gradient-to-tr from-indigo-900 via-blue-900 to-purple-900 text-white bg-grid-pattern">
-
-
-                {/* Floating Gradient Blobs */}
-                {['bg-purple-700', 'bg-blue-700', 'bg-indigo-800'].map((color, i) => (
-                    <div
-                        key={i}
-                        ref={(el) => (blobRefs.current[i] = el)}
-                        className={`absolute rounded-full filter blur-3xl opacity-50 w-[320px] h-[320px]`}
-                        style={{
-                            top: i === 0 ? '-120px' : i === 1 ? '20%' : 'auto',
-                            left: i === 0 ? '-100px' : i === 2 ? '40%' : 'auto',
-                            right: i === 1 ? '-80px' : 'auto',
-                            bottom: i === 2 ? '-100px' : 'auto',
-                        }}
-                    />
-                ))}
-
-                {/* Image */}
-                <div
-                    ref={imageRef}
-                    onMouseMove={handleMouseMove}
-                    onMouseLeave={handleMouseLeave}
-                    className="w-72 h-96 rounded-3xl overflow-hidden shadow-2xl cursor-pointer bg-gradient-to-br from-purple-900 to-violet-700 opacity-0 scale-95 z-10"
-                    style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
-                >
-                    <img
-                        src={imageSrc}
-                        alt="Badam Venkatesh"
-                        className="w-full h-full object-cover rounded-3xl"
-                        draggable={false}
-                        loading="lazy"
-                        style={{ objectPosition: '0% 0%' }}
-                    />
-                </div>
-
-                {/* Text */}
-                <div
-                    ref={textRef}
-                    className="mt-10 md:mt-0 md:ml-16 max-w-lg opacity-100 z-10"
-                >
-                    <h1
-                        ref={headingRef}
-                        className="text-5xl font-extrabold mb-4 drop-shadow-lg"
-                        style={{ textShadow: '0 0 20px rgba(100,100,255,0.8)' }}
-                    >
-                        Hi, There!
-                    </h1>
-                    <h1
-                        ref={headingRef}
-                        className="text-5xl font-extrabold mb-4 bg-gradient-to-r from-cyan-600 to-white bg-clip-text text-transparent"
-                        style={{ textShadow: '0 0 20px rgba(100,100,255,0.8)' }}
-                    >
-                        I'm Badam Venkatesh
-                    </h1>
-                    {[
-                        'Passionate about ML & GenAI | React js Developer | DSA Enthusiast | Flutter | Developed Bujji - AI Friend',
-                        'I create scalable React & Flutter apps, backed by strong DSA skills. Passionate about ML and Generative AI, I built Bujji — an interactive 3D avatar that feels human.',
-                    ].map((text, i) => (
-                        <div
-                            key={i}
-                            ref={(el) => (paragraphRefs.current[i] = el)}
-                            onMouseMove={(e) => handleCardTilt(e, i)}
-                            onMouseLeave={() => resetCardTilt(i)}
-                            className="mb-2 p-1 rounded-xl shadow-lg transition-transform duration-300 border border-white/10"
-                            style={{
-                                transformStyle: 'preserve-3d',
-                                transform: 'rotateX(0deg) rotateY(0deg)',
-                                perspective: '1000px',
-                            }}
-                        >
-                            <p className="text-base md:text-lg font-bold text-white tracking-wide drop-shadow-[0_1px_4px_rgba(0,200,255,0.6)]">
-                                {text}
-                            </p>
-                        </div>
-                    ))}
-
-
-                    {/* CTA Buttons */}
-                    <div className="flex flex-wrap gap-4 mb-6">
-                        <button
-                            ref={(el) => (buttonRefs.current[0] = el)}
-                            onMouseEnter={() => handleButtonHover(0, true)}
-                            onMouseLeave={() => handleButtonHover(0, false)}
-                            className="bg-cyan-600 px-6 py-2 rounded-full font-medium shadow-md transition-transform duration-300 font-mono"
-                            onClick={() => {
-                                const section = document.getElementById("projects");
-                                if (section) {
-                                    section.scrollIntoView({ behavior: "smooth" });
-                                }
-                            }}
-                        >
-                            View Projects
-                        </button>
-                        <a
-                            href="https://drive.google.com/file/d/1CPvq5SO6z8KVdfHwVfWlUvwXROROr9Za/view?usp=drive_link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            ref={(el) => (buttonRefs.current[1] = el)}
-                            onMouseEnter={() => handleButtonHover(1, true)}
-                            onMouseLeave={() => handleButtonHover(1, false)}
-                            className="bg-transparent border border-cyan-400 text-cyan-300 px-6 py-2 rounded-full hover:bg-cyan-700 transition-colors duration-300 font-mono"
-                        >
-                            Download Resume
-                        </a>
-                    </div>
-
-                    {/* Social Links */}
-                    <div className="flex gap-4 text-xl text-gray-300">
-                        {[FaLinkedin, FaGithub, FaEnvelope].map((Icon, i) => (
-                            <a
-                                key={i}
-                                href={
-                                    i === 0
-                                        ? 'https://linkedin.com/in/badamvenkatesh'
-                                        : i === 1
-                                            ? 'https://github.com/badamvenkatesh'
-                                            : 'mailto:badamvenkatesh@gmail.com'
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                ref={(el) => (socialRefs.current[i] = el)}
-                                onMouseEnter={() => handleSocialHover(i, true)}
-                                onMouseLeave={() => handleSocialHover(i, false)}
-                                className="cursor-pointer hover:text-violet-300 transition-colors duration-300"
-                            >
-                                <Icon />
-                            </a>
-                        ))}
-                    </div>
-                </div>
-            </section>
-        </>
-    );
+      <style>{`
+        @media (max-width: 768px) {
+          .hero-grid { grid-template-columns: 1fr !important; text-align: center; }
+          .hero-grid > div:first-child { order: 2; }
+          .hero-grid > div:last-child { order: 1; justify-self: center; }
+          .hero-grid > div:first-child > div:last-child { justify-content: center; }
+          .hero-grid > div:first-child > div[style*="gap: 16px"] { justify-content: center; }
+          .hero-grid p[class*="font-mono"] { text-align: center; }
+          .hero-grid p[class*="font-body"] { margin-left: auto; margin-right: auto; }
+          .scroll-indicator { display: none !important; }
+        }
+      `}</style>
+    </section>
+  );
 };
 
-export default HeroWithImage;
+export default Hero;

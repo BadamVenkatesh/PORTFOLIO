@@ -1,14 +1,291 @@
 @import "tailwindcss";
 
-@keyframes gridMove {
-  0% { background-position: 0 0; }
-  100% { background-position: 60px 60px; }
+/* ===== GOLD & BLACK DESIGN SYSTEM ===== */
+
+:root {
+  --gold: #c9a84c;
+  --gold-light: #f5d680;
+  --gold-dark: #a08030;
+  --gold-muted: #b8973f;
+  --black: #0a0a0a;
+  --black-light: #111111;
+  --black-card: #161616;
+  --black-elevated: #1a1a1a;
+  --gray-900: #1c1c1c;
+  --gray-800: #2a2a2a;
+  --gray-700: #3a3a3a;
+  --gray-500: #6b6b6b;
+  --gray-400: #8a8a8a;
+  --gray-300: #a3a3a3;
+  --gray-200: #c4c4c4;
+  --white: #f0ece4;
+  --white-pure: #ffffff;
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
-.bg-grid-pattern {
-  background-color: rgba(0, 4, 24, 0.966);
-  background-image: linear-gradient(rgba(0, 225, 255, 0.39) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(0, 255, 170, 0.349) 1px, transparent 1px);
-  background-size: 40px 40px;
-  animation: gridMove 20s linear infinite;
+/* ===== BASE RESET ===== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--black);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ===== CUSTOM SCROLLBAR ===== */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* ===== SELECTION ===== */
+
+::selection {
+  background: var(--gold);
+  color: var(--black);
+}
+
+/* ===== TEXT UTILITIES ===== */
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.text-gold {
+  color: var(--gold);
+}
+
+.text-gold-light {
+  color: var(--gold-light);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== BACKGROUND UTILITIES ===== */
+
+.bg-dark {
+  background-color: var(--black);
+}
+
+.bg-dark-light {
+  background-color: var(--black-light);
+}
+
+.bg-dark-card {
+  background-color: var(--black-card);
+}
+
+.bg-dark-elevated {
+  background-color: var(--black-elevated);
+}
+
+/* ===== CARD STYLES ===== */
+
+.glass-card {
+  background: rgba(22, 22, 22, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  border-radius: 16px;
+}
+
+.glass-card:hover {
+  border-color: rgba(201, 168, 76, 0.35);
+  box-shadow: 0 8px 40px rgba(201, 168, 76, 0.08);
+}
+
+/* ===== GOLD BORDER GLOW ===== */
+
+.gold-glow {
+  box-shadow: 0 0 20px rgba(201, 168, 76, 0.15),
+              0 0 60px rgba(201, 168, 76, 0.05);
+}
+
+.gold-glow-strong {
+  box-shadow: 0 0 30px rgba(201, 168, 76, 0.25),
+              0 0 80px rgba(201, 168, 76, 0.1);
+}
+
+/* ===== GRAIN TEXTURE OVERLAY ===== */
+
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ===== SECTION SEPARATOR ===== */
+
+.section-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto;
+}
+
+/* ===== LINK STYLES ===== */
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+/* ===== BUTTON BASE ===== */
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gold);
+  transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: -1;
+}
+
+.btn-gold:hover {
+  color: var(--black);
+}
+
+.btn-gold:hover::before {
+  left: 0;
+}
+
+.btn-gold-filled {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: var(--gold);
+  border: 1px solid var(--gold);
+  color: var(--black);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.btn-gold-filled:hover {
+  background: var(--gold-light);
+  box-shadow: 0 0 25px rgba(201, 168, 76, 0.3);
+}
+
+/* ===== SECTION HEADING ===== */
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 2rem;
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(201, 168, 76, 0); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
 }

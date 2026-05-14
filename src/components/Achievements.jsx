@@ -1,103 +1,102 @@
-import { Helmet } from 'react-helmet';
-import { FiAward, FiCode, FiBookOpen, FiUsers } from 'react-icons/fi';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FiCode, FiAward, FiUsers, FiBookOpen, FiZap } from 'react-icons/fi';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const achievements = [
   {
-    icon: <FiCode className="text-cyan-400 w-6 h-6" />,
-    title: '300+ Problems Solved',
-    desc: 'On LeetCode, focused on data structures & algorithms.',
+    icon: <FiAward />,
+    title: 'Flipkart Grid 7.0 — National Semi-Finalist',
+    desc: 'Cleared multiple rounds to reach the national semi-finals in one of India\'s largest and most competitive engineering challenges.',
   },
   {
-    icon: <FiUsers className="text-purple-400 w-6 h-6" />,
-    title: 'Team Lead - Smart India Hackathon 2024',
-    desc: 'Led a team to develop an innovative solution for industry problem statement.',
+    icon: <FiCode />,
+    title: '1200+ DSA Problems Solved',
+    desc: 'Across LeetCode, Codeforces, CodeChef, and AtCoder. Focused on graphs, dynamic programming, segment trees, and binary search patterns.',
   },
   {
-    icon: <FiAward className="text-yellow-400 w-6 h-6" />,
-    title: 'Rank 1 in University',
-    desc: 'Achieved CGPA 9.92, top rank among all students.',
+    icon: <FiAward />,
+    title: 'Rank 1 in University (PUC)',
+    desc: 'Topped RGUKT Basar with a CGPA of 9.92 in Pre-University Course across all branches.',
   },
   {
-    icon: <FiBookOpen className="text-green-400 w-6 h-6" />,
-    title: 'Machine Learning Specialization',
-    desc: (
-      <>
-        Completed{' '}
-        <a
-          href="https://coursera.org/verify/specialization/L6DINDHE7IR1"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-cyan-400 underline hover:text-cyan-600"
-        >
-          Coursera Certification
-        </a>
-      </>
-    ),
+    icon: <FiUsers />,
+    title: 'Team Lead — Smart India Hackathon 2024 & 2025',
+    desc: 'Led teams in both SIH 2024 and 2025, developing solutions for government problem statements with real-world impact.',
   },
   {
-    icon: <FiUsers className="text-pink-400 w-6 h-6" />,
-    title: 'VJ Hackathon 2024 Participation',
-    desc: 'Participated and contributed to team project in VJH Hackathon.',
+    icon: <FiZap />,
+    title: 'Cognizant × Aston Martin GenAI Ideathon',
+    desc: 'Participated in the GenAI Ideathon organized by Cognizant in collaboration with Aston Martin, competing with solutions at the intersection of AI and industry.',
+  },
+  {
+    icon: <FiAward />,
+    title: '9am SkillVerified — Nova Coding Challenge IV (Top 20)',
+    desc: 'Ranked among the Top 20 contestants nationwide in the 9am Nova Coding Challenge IV.',
+    link: 'https://credentials.9am.careers/credentials/b6a1d57f-c99a-489e-94f8-6ec83f047ad6',
+  },
+  {
+    icon: <FiBookOpen />,
+    title: 'ML Specialization — Andrew Ng (Coursera)',
+    desc: 'Completed the full Machine Learning Specialization covering supervised learning, neural networks, bias-variance tradeoff, and recommender systems.',
+    link: 'https://coursera.org/verify/specialization/L6DINDHE7IR1',
   },
 ];
 
-const Achievements = () => (
-  <>
-    <Helmet>
-      <title>Badam Venkatesh Portfolio</title>
-      <meta name="description" content="Achievements, awards, and recognitions earned by Badam Venkatesh in the field of software development." />
-      <meta name="keywords" content="Badam Venkatesh achievements, awards, software developer recognition, coding contests, hackathons" />
-    </Helmet>
-    <section id="achievements" className="relative py-16 px-6 bg-[#0f172a] font-mono text-white min-h-screen overflow-hidden">
-      {/* Background Layers */}
-      <div className="absolute inset-0 bg-gradient-radial from-[#0f172a] via-[#1e293b] to-black opacity-100 z-0" />
-      <div className="absolute inset-0 grid grid-cols-20 grid-rows-20 z-0 pointer-events-none">
-        {[...Array(400)].map((_, i) => (
-          <div
-            key={i}
-            className="border border-cyan-400 opacity-10"
-            style={{
-              animation: `pulseGrid 5s ease-in-out infinite`,
-              animationDelay: `${(i % 20) * 0.1}s`,
-            }}
-          />
-        ))}
-      </div>
+const Achievements = () => {
+  const sectionRef = useRef(null);
+  const itemsRef = useRef([]);
 
-      {/* Header */}
-      <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 via-cyan-300 to-white bg-clip-text text-transparent text-center drop-shadow-[0_0_15px_rgba(0,191,255,0.8)] experience-heading mb-10">
-        Achievements & Certifications
-      </h2>
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      itemsRef.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.fromTo(el,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.7, delay: i * 0.1, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 88%' } }
+        );
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
-      {/* Cards */}
-      <div className="relative z-10 max-w-5xl mx-auto grid gap-10 md:grid-cols-2">
-        {achievements.map(({ icon, title, desc }, i) => (
-          <div
-            key={i}
-            className="flex items-start space-x-4 bg-[#1e293bcc] backdrop-blur-md border border-cyan-600/30 rounded-xl p-6 shadow-lg hover:shadow-cyan-500/40 transition-transform duration-300 hover:scale-[1.03]"
-          >
-            <div className="mt-1">{icon}</div>
-            <div>
-              <h3 className="text-xl font-semibold text-cyan-300 mb-1">{title}</h3>
-              <p className="text-gray-300 text-sm">{desc}</p>
+  return (
+    <section id="achievements" ref={sectionRef}
+      style={{ padding: 'clamp(80px, 12vw, 140px) clamp(24px, 5vw, 80px)', background: '#0d0d0d' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+        <p className="section-label">// achievements</p>
+        <h2 className="section-title">Recognition & milestones</h2>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {achievements.map((item, i) => (
+            <div key={i} ref={(el) => (itemsRef.current[i] = el)} className="achievement-item">
+              <div className="achievement-icon">{item.icon}</div>
+              <div>
+                <h3 className="font-heading" style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f0ece4', marginBottom: '4px' }}>
+                  {item.title}
+                </h3>
+                <p style={{ fontSize: '0.88rem', color: '#8a8a8a', lineHeight: 1.6 }}>
+                  {item.desc}
+                  {item.link && (
+                    <>
+                      {' '}
+                      <a href={item.link} target="_blank" rel="noopener noreferrer" data-cursor-hover
+                        style={{ color: '#c9a84c', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                        Verify →
+                      </a>
+                    </>
+                  )}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-
-      {/* Animation Keyframes */}
-      <style jsx>{`
-      @keyframes pulseGrid {
-        0%, 100% {
-          opacity: 0.08;
-        }
-        50% {
-          opacity: 0.2;
-        }
-      }
-    `}</style>
     </section>
-  </>
-);
+  );
+};
 
 export default Achievements;

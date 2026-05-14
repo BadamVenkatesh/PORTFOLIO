@@ -1,126 +1,112 @@
-import { BsRocketTakeoff } from 'react-icons/bs';
-import { FiLink } from 'react-icons/fi';
-import NeonGrid from './NeonGrid';
-import { Helmet } from 'react-helmet';
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FiExternalLink, FiGithub } from 'react-icons/fi';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   {
-    title: "Afflicartz Website",
-    desc: "Cashback platform with affiliate links and advanced tracking system for e-commerce.",
-    tech: "React, Flutter, Firebase",
-    link: "https://afflicartz.com"
+    title: 'SK2Face — Forensic Face Matching',
+    desc: 'Distributed microservices architecture for sketch-to-photo face matching. Designed Spring Boot services with API Gateway, Eureka service discovery, and Feign Client for inter-service communication. Built an image retrieval pipeline using FastAPI + TensorFlow embeddings with cosine similarity ranking.',
+    tech: ['Spring Boot', 'FastAPI', 'TensorFlow', 'MySQL', 'Docker', 'Eureka'],
+    link: 'https://github.com/BadamVenkatesh/sk2face-backend',
+    type: 'github',
   },
   {
-    title: "Sai Ram Snacks Website",
-    desc: "Custom Shopify storefront for local snack brand with tailored UI/UX and cart features.",
-    tech: "HTML, CSS, JavaScript, Liquid",
-    link: "https://sai-ram-snacks.myshopify.com"
+    title: 'PathoLens — AI Genomic Variant Analysis',
+    desc: 'Full-stack platform for visualizing genomic sequences and scoring pathogenicity of single-nucleotide variants. Deployed the Evo2 model on Modal for low-latency, scalable inference. Designed the UI for rapid variant lookup and researcher workflows.',
+    tech: ['React', 'Tailwind', 'Three.js', 'Python', 'Modal', 'Evo2'],
+    link: 'https://github.com/BadamVenkatesh/PathoLens.ai-Frontend',
+    type: 'github',
   },
   {
-    title: "Portfolio Website",
-    desc: "Responsive personal portfolio with GSAP animations and a developer-centric theme.",
-    tech: "React, TailwindCSS, GSAP",
-    link: "https://badam-portfolio.netlify.app"
+    title: 'VIBE — 3D AI Companion',
+    desc: 'Emotionally intelligent 3D AI avatar that supports real-time, emotion-aware conversations. Built interactive Three.js frontend with a Node.js backend managing conversational context and Gemini-powered inference pipelines.',
+    tech: ['React', 'Three.js', 'Node.js', 'Gemini API'],
+    link: 'https://github.com/BadamVenkatesh/VIBE',
+    type: 'github',
   },
   {
-    title: "Track & Save App",
-    desc: "An app to manage expenses and visualize financial goals.",
-    tech: "React, TailwindCSS",
-    link: "https://enchanting-cascaron-95ade5.netlify.app"
+    title: 'Chatterly — WhatsApp AI Assistant',
+    desc: 'A WhatsApp bot built with LangChain + Gemini that replies exactly like me — mixing Telugu and English, casual slang, emojis, and real-human chat flow. Handles birthday wishes and friendly conversations automatically.',
+    tech: ['Node.js', 'LangChain', 'Gemini', 'WhatsApp API'],
+    link: 'https://github.com/BadamVenkatesh/Chatterly',
+    type: 'github',
   },
   {
-    title: "BUJJI - AI Friend",
-    desc: "A 3D avatar AI assistant that talks, learns, and interacts like a real companion.",
-    tech: "React, Three.js, Nodejs, TailwindCSS, Gemini",
-    link: "https://github.com/Venkatesh2007/BUJJI_FRONTEND.git"
-  }
+    title: 'TunedIn — AI Hackathon Finder',
+    desc: 'AI-powered app that matches you with relevant hackathons based on your skills and interests. Uses Groq LLMs with a ChromaDB vector store for semantic search and precise recommendations.',
+    tech: ['Python', 'Streamlit', 'Groq', 'ChromaDB', 'LangChain'],
+    link: 'https://github.com/BadamVenkatesh/TunedIn',
+    type: 'github',
+  },
+  {
+    title: 'Afflicartz — Cashback Platform',
+    desc: 'End-to-end cashback and coupon tracking platform with Flutter mobile app and React web dashboard. Integrated affiliate tracking APIs, Firebase auth, and real-time database for user cashback management.',
+    tech: ['React', 'Flutter', 'Firebase', 'REST APIs'],
+    link: 'https://afflicartz.com',
+    type: 'live',
+  },
 ];
 
-
 const Projects = () => {
+  const sectionRef = useRef(null);
   const cardsRef = useRef([]);
 
   useEffect(() => {
-    gsap.fromTo(
-      cardsRef.current,
-      {
-        opacity: 0,
-        y: 50,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.2,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: "#projects",
-          start: "top 80%",
-        },
-      }
-    );
+    const ctx = gsap.context(() => {
+      cardsRef.current.forEach((card, i) => {
+        if (!card) return;
+        gsap.fromTo(card,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.8, delay: i * 0.1, ease: 'power3.out',
+            scrollTrigger: { trigger: card, start: 'top 88%' } }
+        );
+      });
+    }, sectionRef);
+    return () => ctx.revert();
   }, []);
+
   return (
-    <>
-      <Helmet>
-        <title>Badam Venkatesh Portfolio</title>
-        <meta name="description" content="View the software projects built by Badam Venkatesh including React apps, Flutter projects, and open-source contributions." />
-        <meta name="keywords" content="Badam Venkatesh projects, React projects, Flutter projects, software development portfolio, open source" />
-      </Helmet>
-      <section id="projects" className="relative py-20 px-6 bg-[#0a0f2a] font-mono min-h-screen overflow-hidden text-white">
-        {/* Neon Grid Background */}
-        <NeonGrid />
+    <section id="projects" ref={sectionRef}
+      style={{ padding: 'clamp(80px, 12vw, 140px) clamp(24px, 5vw, 80px)', background: '#0a0a0a' }}>
+      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+        <p className="section-label">// selected work</p>
+        <h2 className="section-title">Things I've built</h2>
 
-        <h2
-          className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 via-cyan-300 to-white bg-clip-text text-transparent text-center drop-shadow-[0_0_15px_rgba(0,191,255,0.8)] experience-heading mb-10"
-        >
-          <BsRocketTakeoff className="w-10 h-10 mr-3 text-cyan-400 inline" />
-          Projects
-        </h2>
-
-        <div className="relative z-10 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 420px), 1fr))', gap: '24px' }}>
           {projects.map((proj, i) => (
-            <div
-              key={i}
-              ref={(el) => (cardsRef.current[i] = el)}
+            <a key={i} ref={(el) => (cardsRef.current[i] = el)}
+              href={proj.link} target="_blank" rel="noopener noreferrer"
+              className="project-card" data-cursor-hover
+              style={{ textDecoration: 'none', display: 'block' }}>
+              <span className="project-number">0{i + 1}</span>
 
-              className="group relative bg-[#1e293b] border border-cyan-500/30 p-6 rounded-xl shadow-lg transition-transform hover:scale-[1.03] hover:shadow-cyan-500/60 hover:-translate-y-1 duration-300 cursor-default"
-            >
-              <div className="absolute -top-4 left-4 bg-cyan-500 text-white text-xs px-2 py-0.5 rounded-full shadow shadow-cyan-300">
-                #{i + 1}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                <h3 className="font-heading" style={{ fontSize: '1.3rem', fontWeight: 700, color: '#f0ece4' }}>
+                  {proj.title}
+                </h3>
+                {proj.type === 'github' ? (
+                  <FiGithub style={{ color: '#6b6b6b', fontSize: '1.1rem', flexShrink: 0 }} />
+                ) : (
+                  <FiExternalLink style={{ color: '#6b6b6b', fontSize: '1.1rem', flexShrink: 0 }} />
+                )}
               </div>
 
-              <h3 className="text-2xl font-semibold text-cyan-300 mb-2 group-hover:text-cyan-400 transition-colors duration-200">
-                {proj.title}
-              </h3>
-
-              <p className="text-gray-300 text-sm mb-3">{proj.desc}</p>
-
-              <p className="text-cyan-400 text-xs mb-4">
-                <span className="font-semibold">Tech Stack:</span> {proj.tech}
+              <p style={{ fontSize: '0.9rem', color: '#8a8a8a', lineHeight: 1.7, marginBottom: '20px' }}>
+                {proj.desc}
               </p>
 
-              <a
-                href={proj.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-auto text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 rounded hover:from-cyan-600 hover:to-blue-600 shadow-md transition-all"
-              >
-                <FiLink className="w-4 h-4 inline" /> View Project
-              </a>
-            </div>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: 'auto' }}>
+                {proj.tech.map((t) => (<span key={t} className="project-tech-tag">{t}</span>))}
+              </div>
+            </a>
           ))}
         </div>
-      </section>
-    </>
-  )
+      </div>
+    </section>
+  );
 };
-
-
 
 export default Projects;

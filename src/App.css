@@ -1,42 +1,302 @@
+/* ===== APP-LEVEL STYLES ===== */
+
 #root {
-  max-width: 1280px;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ===== LOADER ===== */
+
+.loader-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.loader-monogram {
+  font-family: 'Outfit', sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  color: #c9a84c;
+  letter-spacing: 0.15em;
+}
+
+.loader-line {
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+  margin-top: 16px;
+}
+
+/* ===== CUSTOM CURSOR ===== */
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: #c9a84c;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(201, 168, 76, 0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+.cursor-ring.hovered {
+  width: 56px;
+  height: 56px;
+  border-color: rgba(201, 168, 76, 0.8);
+}
+
+/* ===== HERO ===== */
+
+.hero-name-char {
+  display: inline-block;
+  opacity: 0;
+}
+
+.hero-photo-frame {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.hero-photo-frame::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #c9a84c, transparent, #c9a84c);
+  z-index: -1;
+}
+
+/* ===== SCROLL INDICATOR ===== */
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, #c9a84c, transparent);
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.scroll-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: #c9a84c;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  margin-top: 8px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* ===== EXPERIENCE TIMELINE ===== */
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, #c9a84c 20%, #c9a84c 80%, transparent);
+  transform: translateX(-50%);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 20px;
   }
 }
 
-.card {
-  padding: 2em;
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  background: #0a0a0a;
+  border: 2px solid #c9a84c;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: pulse-gold 2s ease-in-out infinite;
 }
 
-.read-the-docs {
-  color: #888;
+@media (max-width: 768px) {
+  .timeline-dot {
+    left: 20px;
+  }
+}
+
+/* ===== SKILLS ORBIT ===== */
+
+.skill-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(22, 22, 22, 0.9);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #c4c4c4;
+  transition: all 0.4s ease;
+  cursor: default;
+}
+
+.skill-chip:hover {
+  border-color: rgba(201, 168, 76, 0.5);
+  color: #c9a84c;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(201, 168, 76, 0.1);
+}
+
+.skill-chip svg,
+.skill-chip .skill-icon {
+  color: #c9a84c;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* ===== PROJECT CARDS ===== */
+
+.project-card {
+  background: rgba(22, 22, 22, 0.85);
+  border: 1px solid rgba(201, 168, 76, 0.1);
+  border-radius: 16px;
+  padding: 32px;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.project-card:hover {
+  border-color: rgba(201, 168, 76, 0.3);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+              0 0 40px rgba(201, 168, 76, 0.05);
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+.project-number {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: rgba(201, 168, 76, 0.08);
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  line-height: 1;
+}
+
+.project-tech-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: #c9a84c;
+  letter-spacing: 0.03em;
+}
+
+/* ===== ACHIEVEMENT CARDS ===== */
+
+.achievement-item {
+  display: flex;
+  gap: 20px;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  background: rgba(22, 22, 22, 0.5);
+  transition: all 0.4s ease;
+}
+
+.achievement-item:hover {
+  border-color: rgba(201, 168, 76, 0.25);
+  background: rgba(22, 22, 22, 0.8);
+}
+
+.achievement-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(201, 168, 76, 0.1);
+  border-radius: 10px;
+  color: #c9a84c;
+  flex-shrink: 0;
+}
+
+/* ===== CONTACT ===== */
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--gray-300);
+  transition: all 0.4s ease;
+}
+
+.contact-link:hover {
+  border-color: rgba(201, 168, 76, 0.5);
+  color: #c9a84c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(201, 168, 76, 0.08);
+}
+
+.contact-link svg {
+  color: #c9a84c;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
 }
